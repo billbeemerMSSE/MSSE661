@@ -2,3 +2,6 @@
 Icon?
 .metadata
 refs/Icon?
+.vscode
+**/node_modules
+**/package-lock.json
