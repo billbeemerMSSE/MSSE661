@@ -1,30 +1,39 @@
 /**
- * Class App Week 3 
+ * Class App Week 4 
  * MS 661
  * Bill Beemer
  */
  
+const doLogin = function(event) {
+	event.preventDefault();
+	const username = document.getElementById("username").value;
+	const password = document.getElementById("password").value;
 
- class Person {
- 	name;
- 	age;
- 		
- 	constructor(name, age) {
- 		this.name = name;
- 		this.age = age;
- 	}
- 	
- 	getRetire() {
- 		return this.age > 62;
- 	}
- }
- 
- var person1 = new Person('Steve', 25);
- var person2 = new Person('Bob', 65);
- 
- console.log(person1);
- console.log(person1.getRetire.apply(person1));
- console.log(person2);
- console.log(person2.getRetire.apply(person2));
+	login({
+		username: username,
+		password: password
+	}).then(function(response) {
+		window.location.href = "home.html";
+	})
+};
+
+const doRegister = function(event) {
+	event.preventDefault();
+	const username = document.getElementById("username").value;
+	const email = document.getElementById("email").value;
+	const password = document.getElementById("password").value;
+
+	register({
+		username: username,
+		email: email,
+		password: password
+	}).then(function(response) {
+		window.location.href = "home.html";
+	})
+};
+
+const doLogout = function(event) {
+	event.preventDefault();
+};
  
  		

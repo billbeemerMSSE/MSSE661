@@ -1,5 +1,7 @@
 const mysql = require("mysql");
-const queries = require("./queries/tasks.queries");
+const authQueries = require("./queries/auth.queries");
+const shootQueries = require("./queries/shoot.queries");
+
 
 const connectionLimit  = process.env.DB_LIMIT || 10;
 
@@ -28,7 +30,15 @@ connection.getConnection(function(error, conn) {
     }
     conn.release();
 
-    connection.query(queries.ALL_TASKS, function(error, result) {
+    connection.query(shootQueries.ALL_SHOOTS, function(error, result) {
+        if (!!error) {
+            console.log(error);
+        } else {
+            console.log(result);
+        }
+    });
+
+    connection.query(authQueries.ALL_USERS, function(error, result) {
         if (!!error) {
             console.log(error);
         } else {
