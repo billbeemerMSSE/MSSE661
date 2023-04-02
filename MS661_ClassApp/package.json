@@ -1,14 +1,16 @@
 {
   "name": "ms661_classapp",
   "version": "1.0.0",
-  "description": "Week 3 Class App first package attempt",
+  "description": "Week 4 Class App first package attempt",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon ./server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Bill Beemer",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22"
   }
 }
