@@ -1,5 +1,5 @@
 /**
- * Class App Week 4 
+ * Final Project Week 4 
  * MS 661
  * Bill Beemer
  */
