@@ -1,4 +1,4 @@
-console.log("Hello Week 4");
+console.log("Maui Sugar Mill Saloon Week 4");
 
 const express = require("express");
 const app = express();
