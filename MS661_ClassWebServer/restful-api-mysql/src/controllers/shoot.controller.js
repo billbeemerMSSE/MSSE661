@@ -1,52 +1,95 @@
 const connection = require("../db-config");
-const shootQueries = require("../queries/shoot.queries");
+// const shootQueries = require("../queries/shoot.queries");
 
-exports.getAllShoots = function(request, response) {
-    connection.query(shootQueries.ALL_SHOOTS, function(error, result, fields) {
-        if (error) {
-            response.send(error);
-        }
-        response.json(result);
+const {
+    ALL_SHOOTS,
+    SINGLE_SHOOT,
+    INSERT_SHOOT,
+    UPDATE_SHOOT,
+    DELETE_SHOOT,
+} = require("../queries/shoot.queries");
+const query = require("../utils/query");
+
+
+exports.getAllShoots = async (request, response) => {
+    const conn = await connection().catch((error) => {
+        throw error;
     });
+
+    const allShoots = await query(conn, ALL_SHOOTS).catch((error) => {
+        response.send(error);
+    });
+
+    if (allShoots.length) {
+        response.json(allShoots); 
+    }
 };
 
-exports.getShoot = function(request, response) {
-    connection.query(shootQueries.SINGLE_SHOOT, [request.params.shoot_id], function(error, result) {
-        if (error) {
-            response.send(error);
-        }
-        response.json(result);
+exports.getShoot = async (request, response) => {
+    const conn = await connection().catch((error) => {
+        throw error;
     });
+
+    const singleShoot = await query(conn, SINGLE_SHOOT, [request.params.shoot_id]).catch((error) => {
+        response.send(error);
+    });
+
+    if (singleShoot.length) {
+        response.json(singleShoot); 
+    }
 };
 
-exports.createShoot = function(request, response) {
-    connection.query(shootQueries.INSERT_SHOOT, [request.body.client], [request.body.cater], function(error, result) {
-        if (error) {
+exports.createShoot = async (request, response) => {
+    // const decoded = request.user;
+
+    // console.log("decoded %s", decoded)
+    
+    // if (decoded.id) {
+        const conn = await connection().catch((error) => {
+            throw error;
+        });
+
+        const insertShoot = await query(conn, INSERT_SHOOT, [request.body.client, request.body.cater]).catch((error) => {
             response.send(error);
+        });
+        console.log(insertShoot);
+
+        if (insertShoot.affectedRows === 1) {
+            response.json({ message: "New Shoot added successfully!"}); 
         }
-        console.log(result);
-        response.json({ message: "Number inserted: " + result.affectedRows });
-    });
+    // }
 };
 
-exports.updateShoot = function(request, response) {
-    connection.query(shootQueries.UPDATE_SHOOT, 
-                     [request.body.client, 
-                     request.body.cater, 
-                     request.params.shoot_id], 
-                     function(error, result) {
-        if (error) {
-            response.send(error);
-        }
-        response.json(result);
+exports.updateShoot = async (request, response) => {
+    const conn = await connection().catch((error) => {
+        throw error;
     });
+    
+    const existingShoot = await query(conn, UPDATE_SHOOT, [
+        request.body.client,
+        request.body.cater,
+        request.params.shoot_id,
+    ]).catch((error) => {
+        response.send(error);
+    });
+
+    if (existingShoot.affectedRows === 1) {
+        response.json({ message: "Shoot updated successfully!"}); 
+    }
 };
 
-exports.deleteShoot = function(request, response) {
-    connection.query(shootQueries.DELETE_SHOOT, [request.params.shoot_id], function(error) {
-        if (error) {
-            response.send(error);
-        }
-        response.json({ message: "Delete Successful!"});
+exports.deleteShoot = async (request, response) => {
+    const conn = await connection().catch((error) => {
+        throw error;
     });
+
+    const removeShoot = await query(conn, DELETE_SHOOT, [request.params.shoot_id]).catch((error) => {
+        response.send(error);
+    });
+    
+    if (removeShoot.affectedRows === 1) {
+        response.json({ message: "Shoot deleted successfully!"}); 
+    }
 };
+
+
