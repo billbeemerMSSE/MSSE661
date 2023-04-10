@@ -1,39 +1,81 @@
-const jwt = require("jsonwebtoken");
-//const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 
 const connection = require("../db-config");
-const jwtconfig = require("../jwt-config");
-const userQueries = require("../queries/user.queries");
 
-exports.displayUser = function(request, response) {
-    const token = request.headers["auth-token"];
+const query = require("../utils/query");
+const {
+    GET_ME_BY_USER_ID,
+    GET_ME_BY_USER_ID_WITH_PASSWORD,
+    UPDATE_USER,
+} = require("../queries/user.queries");
 
-    if (!token) {
-        response
-            .status(401)
-            .send({ auth: false, message: "No Token Provided!"});
-    }
+exports.getUser = async (request, response) => {
+    console.log(request)
+    console.log(request.user)
+    const decoded = request.user;
+    console.log("decoded %s", decoded);
 
-    jwt.verify(token, jwtconfig.secret, function(error, decoded) {
-        if (error) {
+    if (decoded.id) {
+        const conn = await connection().catch((error) => {
+            throw error;
+        });
+
+        const user = await query(conn, GET_ME_BY_USER_ID, [decoded.id]).catch((error) => {
             response
                 .status(500)
-                .send({ auth: false, message: "Token Failed Authentication!"});
-        }
-        connection.query(userQueries.GET_ME_BY_USER_ID, [decoded.id], function(error, user) {
-            if (error) {
-                response
-                    .status(500)
-                    .send({ message: "User could not be found."});
+                .send({ message: "User could not be found." });
             }
-            if (!user) {
-                response
-                    .status(400)
-                    .send({ message: "User does not exist."});
-            }
+        );
+        if (!user.length) {
             response
-                .status(200)
-                .send(user);
-        });
-    });
+                .status(400)
+                .send({ message: "User does not exist."});
+        }
+        response
+            .status(200)
+            .send(user)
+    }
 };
+
+exports.updateUser = async (request, response) => {
+    const conn = await connection().catch((error) => {
+        throw error;
+    });
+
+    const user = await query(conn, GET_ME_BY_USER_ID_WITH_PASSWORD, [
+        request.user_id,
+    ]).catch((error) => {
+        response
+            .status(500)
+            .send({ message: "User could not be found to update."})
+    });
+
+    const passwordUnchanged = await bcrypt
+        .compare(request.body.password, user.password)
+        .catch((error) => {
+            response
+                .json(500)
+                .json({ message: "Invalid Password!"});
+        });
+    if (!passwordUnchanged) {
+        const passwordHash = bcrypt.hashSync(request.body.password);
+
+        const result = await query(conn, UPDATE_USER, [
+            request.body.username,
+            request.body.email,
+            passwordHash,
+            user[0].user_id,
+        ]).catch((error) => {
+            response
+                .status(500)
+                .send({ message: "User could not be updated."});
+        });
+
+        if (result.affecteRows === 1) {
+            response.json({ message: "User Updated Successfully!"});
+        }
+        response.json({ message: "Nothing to update..."});
+    }
+
+};
+
