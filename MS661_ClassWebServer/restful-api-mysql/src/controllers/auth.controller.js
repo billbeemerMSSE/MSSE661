@@ -1,152 +1,108 @@
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const connection = require("../db-config");
+const jwtconfig = require("../jwt-config");
+const authQueries = require("../queries/auth.queries");
+const userQueries = require("../queries/user.queries");
 
-const {
-    GET_ME_BY_USERNAME,
-    GET_ME_BY_USERNAME_WITH_PASSWORD,
-    INSERT_NEW_USER,
-} = require("../queries/user.queries");
+exports.getAllUsers = function(request, response) {
+    connection.query(authQueries.ALL_USERS, function(error, result, fields) {
+        if (error) {
+            response.send(error);
+        }
+        response.json(result);
+    });
+};
 
-const query = require("../utils/query");
-
-const {
-    refreshTokens,
-    generateAccessToken,
-    generateRefreshToken,
-} = require("../utils/jwt-helpers");
-
-
-// exports.getAllUsers = function(request, response) {
-//     connection.query(authQueries.ALL_USERS, function(error, result, fields) {
-//         if (error) {
-//             response.send(error);
-//         }
-//         response.json(result);
-//     });
-// };
-
-exports.registerUser = async (request, response) => {
+exports.registerUser = function(request, response) {
     const passwordHash = bcrypt.hashSync(request.body.password);
-    const params = [request.body.username, request.body.email, passwordHash];
 
-    const conn = await connection().catch((error) => {
-        throw error;
-    });
-
-    const newUser = await query(conn, GET_ME_BY_USERNAME, [request.params.username]).catch((error) => {
-        response
-            .status(500)
-            .send({ message: "Registered User Not Found"});
-        }
-    );
-
-    if (newUser.length === 1) {
-        response
-            .status(403)
-            .send({ message: "Registerd User Exists!" });
-    } else {
-        const result = await query(conn, INSERT_NEW_USER, params).catch((error) => {
-            response
-                .status(500)
-                .send({ message: "Register User Failed." })
-        });
-        response.send({ message: "Registration Successful!"})
-    }
-};
-
-exports.loginUser = async (request, response) => {
-    const conn = await connection().catch((error) => {
-        throw error;
-    });
-
-    const user = await query(conn, GET_ME_BY_USERNAME_WITH_PASSWORD, [request.body.username]).catch((error) => {
-        response
-            .status(500)
-            .send({ message: "User Not Found"});
-        }
-    );
-
-    if (user.length === 1) {
-        const validPass = await bcrypt
-            .compare(request.body.password, user[0].password)
-            // .compare(request.body.password, user.password)
-            .catch((error) => {
+    connection.query(
+        authQueries.INSERT_NEW_USER,
+        [request.body.username, request.body.email, passwordHash],
+        function(error, result) {
+            if (error) {
+                console.log(error);
                 response
-                    .json(500)
-                    .json({ message: "Invalid Password!"});
-            });
-        if (!validPass) {
-            response
-                .status(400)
-                .send({ message:"Invalid Password!"});
+                    .status(500)
+                    .send({ message: "Register User Failed."});
+            }
+            connection.query(
+                userQueries.GET_ME_BY_USERNAME, 
+                [request.body.username],
+                function(error, user) {
+                    if (error) {
+                        response
+                            .status(500)
+                            .send({ message: "Registered User Not Found."});
+                    }
+
+                    console.log(user);
+                    response.send(user);
+                });
         }
-        const accessToken = generateAccessToken(user[0].user_id, {
-        // const accessToken = generateAccessToken(user.user_id, {
-            expiresIn: 86400,
-        });
-        const refreshToken = generateRefreshToken(user[0].user_id, {
-        // const refreshToken = generateRefreshToken(user.user_id, {
-            expiresIn: 86400,
-        });
-
-        refreshTokens.push(refreshToken);
-
-        response
-            .header("access_token", accessToken)
-            .send({ 
-                auth: true,
-                message: "Logged in Successfully!",
-                token_type: "bearer",
-                access_token: accessToken,
-                expires_in: 86400,
-                refresh_token: refreshToken,
-        });
-    }
-
+    );
 };
 
-exports.token = (request, response) => {
-    const refreshToken = request.body.token;
-
-    if (!refreshToken) {
-        response
-            .status(401)
-            .send({
-                auth: false,
-                message: "No Token, Access Denied!"
-            });
-    }
-
-    if (!refreshTokens.includes(refreshToken)) {
-        response
-            .status(403)
-            .send({ message: "Refresh Token Invalid!"});
-    }
-
-    const verified = verifyToken(refreshToken, jwtconfig.refresh, request, response);
-
-    if (verified) {
-        const accessToken = generatedToken(user[0].user_id, { expiresIn: 86400 });
-        response
-            .header("access_token", accessToken)
-            .send({ 
-                auth: true,
-                message: "Logged in Successfully!",
-                token_type: "bearer",
-                access_token: accessToken,
-                expires_in: 20,
-                refresh_token: refreshToken,
-        });
-    }
-    response
-        .status(403)
-        .send({ message: "Token Invalid!"})
+exports.loginUser = function(request, response) {
+    connection.query(
+        userQueries.GET_ME_BY_USERNAME_WITH_PASSWORD,
+        [request.body.username],
+        function(error, user) {
+            if (error) {
+                response
+                    .status(500)
+                    .send({ message: "Login User Not Found."});
+            }
+            console.log(user);
+            bcrypt
+                .compare(request.body.password, user[0].password)
+                .then(function(validPassword) {
+                    if (!validPassword) {
+                        response
+                            .status(400)
+                            .send({ message: "Password Invalid!"});
+                    }
+                    const token = jwt.sign({ id: user[0].user_id }, jwtconfig.secret);
+                    response
+                        .header("auth-token", token)
+                        .send({ auth: true, message: "Successful Login!"});
+                })
+                .catch(console.log);
+        }
+    );
 };
 
-exports.logoutUser = (request, response) => {
-    const refreshToken = request.body.token;
-    refreshTokens = refreshTokens.filter((t) => t !== refreshToken);
 
-    response.send({ message: "Successful Logout"});
+exports.updateUser = function(request, response) {
+    connection.query(
+        userQueries.GET_ME_BY_USER_ID_WITH_PASSWORD,
+        [request.user.id],
+        function(error, user) {
+            console.log(error, user);
+            if (error) {
+                response
+                    .status(500)
+                    .send({ message: "Update Login User Not Found."});
+            }
+
+            const passwordHash = bcrypt.hashSync(request.body.password);
+            //update
+
+            connection.query(
+                authQueries.UPDATE_USER,
+                [request.body.username, request.body.email, passwordHash, request.user.id],
+                function(error, result) {
+                    if (error) {
+                        console.log(error);
+                        response
+                            .status(500)
+                            .send({ message: "Update User Failed!"});
+                    }
+                    response.json({ message: "User Update Successful!"});
+                }
+            );
+        }
+    );
 };
