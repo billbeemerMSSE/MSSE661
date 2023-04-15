@@ -5,3 +5,5 @@ refs/Icon?
 .vscode
 **/node_modules
 **/package-lock.json
+.settings
+.project

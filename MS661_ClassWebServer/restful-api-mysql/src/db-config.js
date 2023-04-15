@@ -22,7 +22,7 @@ const connection = mysql.createPool({
 });
 
 // connection.connect(function(error) {
-connection.getConnection(function(error, conn) {
+connection.getConnection((error, conn) => {
     if (!!error){
         console.log(error);
     } else {
@@ -30,21 +30,21 @@ connection.getConnection(function(error, conn) {
     }
     conn.release();
 
-    connection.query(shootQueries.ALL_SHOOTS, function(error, result) {
-        if (!!error) {
-            console.log(error);
-        } else {
-            console.log(result);
-        }
-    });
+    // connection.query(shootQueries.ALL_SHOOTS, (error, result) => {
+    //     if (!!error) {
+    //         console.log(error);
+    //     } else {
+    //         console.log(result);
+    //     }
+    // });
 
-    connection.query(authQueries.ALL_USERS, function(error, result) {
-        if (!!error) {
-            console.log(error);
-        } else {
-            console.log(result);
-        }
-    });
+    // connection.query(authQueries.ALL_USERS, (error, result) => {
+    //     if (!!error) {
+    //         console.log(error);
+    //     } else {
+    //         console.log(result);
+    //     }
+    // });
 });
 
 module.exports = connection;

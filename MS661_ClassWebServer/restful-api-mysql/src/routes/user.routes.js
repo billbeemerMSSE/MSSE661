@@ -7,6 +7,7 @@ const userRoutes = express.Router();
 
 userRoutes.get("/me", userController.displayUser);
 
-userRoutes.post("/me/update", verifyToken, authController.updateUser);
+// userRoutes.post("/me/update", verifyToken, authController.updateUser);
+userRoutes.post("/me/update", authController.updateUser);
 
 module.exports = userRoutes;
