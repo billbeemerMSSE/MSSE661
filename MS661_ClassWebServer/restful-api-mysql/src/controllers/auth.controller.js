@@ -6,7 +6,7 @@ const jwtconfig = require("../jwt-config");
 const authQueries = require("../queries/auth.queries");
 const userQueries = require("../queries/user.queries");
 
-exports.getAllUsers = function(request, response) {
+exports.getAllUsers = (request, response) => {
     connection.query(authQueries.ALL_USERS, function(error, result, fields) {
         if (error) {
             response.send(error);
@@ -15,7 +15,7 @@ exports.getAllUsers = function(request, response) {
     });
 };
 
-exports.registerUser = function(request, response) {
+exports.registerUser = (request, response) => {
     const passwordHash = bcrypt.hashSync(request.body.password);
 
     connection.query(
@@ -23,10 +23,11 @@ exports.registerUser = function(request, response) {
         [request.body.username, request.body.email, passwordHash],
         function(error, result) {
             if (error) {
-                console.log(error);
+                // console.log(error);
                 response
                     .status(500)
                     .send({ message: "Register User Failed."});
+                    return;
             }
             connection.query(
                 userQueries.GET_ME_BY_USERNAME, 
@@ -36,16 +37,19 @@ exports.registerUser = function(request, response) {
                         response
                             .status(500)
                             .send({ message: "Registered User Not Found."});
+                            return;
                     }
 
                     console.log(user);
-                    response.send(user);
+                    response.status(200);
+                    response.send({ message: "Registration Successful!" });
                 });
+            
         }
     );
 };
 
-exports.loginUser = function(request, response) {
+exports.loginUser = (request, response) => {
     connection.query(
         userQueries.GET_ME_BY_USERNAME_WITH_PASSWORD,
         [request.body.username],
@@ -54,6 +58,7 @@ exports.loginUser = function(request, response) {
                 response
                     .status(500)
                     .send({ message: "Login User Not Found."});
+                    return;
             }
             console.log(user);
             bcrypt
@@ -63,6 +68,7 @@ exports.loginUser = function(request, response) {
                         response
                             .status(400)
                             .send({ message: "Password Invalid!"});
+                            return;
                     }
                     const token = jwt.sign({ id: user[0].user_id }, jwtconfig.secret);
                     response

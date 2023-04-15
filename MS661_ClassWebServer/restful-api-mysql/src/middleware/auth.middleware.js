@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const jwtconfig = require("../jwt-config");
 
-module.exports = function(request, response, next) {
+module.exports = (request, response, next) => {
     const token = request.headers["auth-token"];
 
     if (!token) {
