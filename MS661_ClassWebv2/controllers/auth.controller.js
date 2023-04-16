@@ -48,6 +48,19 @@ exports.getUser = async (req, res) => {
     return res.json(user);
 }
 
+exports.updateUser = async (req, res) => {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const updateUser = await UserModel.update({
+        name: req.body.name,
+        password: hashedPassword
+        }, {
+        where: {
+            email: req.body.email
+        }
+    });
+    return res.json(updateUser);
+}
+
 exports.logout = async (req, res) => { 
     const token = req.token;
     const now = new Date();

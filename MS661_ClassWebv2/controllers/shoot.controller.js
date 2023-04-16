@@ -19,31 +19,20 @@ exports.createShoot = async (req, res) => {
     return res.json(newShoot);
 }
 
-// exports.updateShoot = async (req, res) => {
-//     const shoot = await ShootModel.findByPk(req.shoot.id);
-//     return res.json(shoot);
-// }
+exports.updateShoot = async (req, res) => {
+    const updateShoot = await ShootModel.update({client: req.body.client, cater: req.body.cater}, {
+        where: {
+            id: req.params.id
+        }
+    });
+    return res.json(updateShoot);
+}
 
-// exports.deleteShoot = async (req, res) => {
-//     const shoot = await ShootModel.findByPk(req.shoot.id);
-//     return res.json(shoot);
-// }
-
-// exports.getAllShoots = async (req, res) => {
-//     const isExist = await UserModel.findOne({
-//         where:{
-//             email: req.body.email
-//         }
-//     })
-//     if(isExist) {
-//         return res.status(400).json({ message: 'Email already exists.' });
-//     }
-//     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-//     const user = await UserModel.create({
-//         name: req.body.name,
-//         email: req.body.email,
-//         password: hashedPassword
-//     });
-//     return res.json(user);
-// }
+exports.deleteShoot = async (req, res) => {
+    const deleteShoot = await ShootModel.destroy({
+        where: {
+            id: req.params.id
+        }
+    });
+    return res.json(deleteShoot);
+}
