@@ -19,7 +19,7 @@ const doLogin = async (event) => {
 	setStorage("isAuth", auth)
 	setStorage("token", token);
 
-	window.location.href = "home.html";
+	window.location.href = "shoot.html";
 
 };
 
@@ -36,7 +36,7 @@ const doRegister = async (event) => {
 	});
 	
 	if (response) {
-		window.location.href = "home.html";
+		window.location.href = "shoot.html";
 	}
 };
 

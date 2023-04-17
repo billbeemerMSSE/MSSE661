@@ -4,6 +4,6 @@
     if (!isAuth) {
         logout();
         alert("Log in to view your catering list.");
-        window.location.href = "/home.html";
+        window.location.href = "index.html";
     }
 })();

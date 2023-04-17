@@ -22,8 +22,48 @@
         <p>
         You are inside the website - woohoo! 
         </p>
-        
-      </div>
+        <br>
+        <div class="container">
+          <div class="shoot-form">
+            <form>
+              <div class="form-row">
+
+                  <label class="sr-only" for="formInputShootClient">Client Name</label>
+                  <input
+                    id="formInputShootClient"
+                    class="form-control"
+                    type="text"
+                    name="shoot-client"
+                    placeholder="Client Name"
+                  />
+                </div>
+                <div class="col-md-3">
+                  <label class="sr-only" for="formInputShootCater">Cater Needed</label>
+                  <input
+                    id="formInputShootCater"
+                    class="form-control"
+                    type="text"
+                    name="shoot-cater"
+                    placeholder="Cater Needed"
+                  />
+                </div>
+                <div class="col-md-3">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    onclick="doAddShoot(event)"
+                  >
+                    ADD
+                  </button>
+                </div>
+
+            </form>
+          </div>
+    
+          <div id="shoots">
+            <div>Loading...</div>
+          </div>
+        </div>
 
       <footer>
         <nav>
@@ -46,9 +86,9 @@
   <script src="./src/route-guard.js"></script>
   <script src="./src/service-helpers.js"></script>
   <script src="./src/auth.service.js"></script>
-  <script src="./src/tasks.service.js"></script>
-  <script src="./src/build-tasks-list.js"></script>
-  <script src="./src/add-task.js"></script>
+  <script src="./src/shoot.service.js"></script>
+  <script src="./src/build-shoot-list.js"></script>
+  <script src="./src/add-shoot.js"></script>
   <script src="./src/auth.js"></script>
   
 </html>
