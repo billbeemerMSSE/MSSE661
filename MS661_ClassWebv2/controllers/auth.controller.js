@@ -4,12 +4,14 @@ const cache = require('../utils/cache.util');
 const jwt = require('../utils/jwt.util');
 const bcrypt = require('bcrypt');
 
+const { serverError } = require("../utils/handlers");
+
 exports.register = async (req, res) => {
     const isExist = await UserModel.findOne({
         where:{
             email: req.body.email
         }
-    })
+    }).catch(serverError(res));
     if(isExist) {
         return res.status(400).json({ message: 'Email already exists.' });
     }
@@ -19,7 +21,7 @@ exports.register = async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword
-    });
+    }).catch(serverError(res));
     return res.json(user);
 }
 
@@ -28,7 +30,7 @@ exports.login = async (req, res) => {
         where: {
             email: req.body.email
         }
-    });
+    }).catch(serverError(res));
     if (user) {
         const isMatched = await bcrypt.compare(req.body.password, user.password);
         if (isMatched) {
@@ -44,7 +46,7 @@ exports.login = async (req, res) => {
 }
 
 exports.getUser = async (req, res) => {
-    const user = await UserModel.findByPk(req.user.id);
+    const user = await UserModel.findByPk(req.user.id).catch(serverError(res));
     return res.json(user);
 }
 
@@ -57,7 +59,7 @@ exports.updateUser = async (req, res) => {
         where: {
             email: req.body.email
         }
-    });
+    }).catch(serverError(res));
     return res.json(updateUser);
 }
 

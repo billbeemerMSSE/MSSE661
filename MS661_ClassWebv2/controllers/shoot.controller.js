@@ -5,17 +5,22 @@ const jwt = require('../utils/jwt.util');
 const bcrypt = require('bcrypt');
 
 exports.getAllShoots = async (req, res) => {
-    const allShoots = await ShootModel.findAll();
+    const allShoots = await ShootModel.findAll().catch(serverError(res));
+
+    if (!allShoots.length) {
+        return res.status(400).json({ message: "No data available."})
+    }
+
     return res.json(allShoots);
 }
 
 exports.getShoot = async (req, res) => {
-    const oneShoot = await ShootModel.findByPk(req.params.id);
+    const oneShoot = await ShootModel.findByPk(req.params.id).catch(serverError(res));
     return res.json(oneShoot);
 }
 
 exports.createShoot = async (req, res) => {
-    const newShoot = await ShootModel.create({client: req.body.client, cater: req.body.cater});
+    const newShoot = await ShootModel.create({client: req.body.client, cater: req.body.cater}).catch(serverError(res));
     return res.json(newShoot);
 }
 
@@ -24,7 +29,7 @@ exports.updateShoot = async (req, res) => {
         where: {
             id: req.params.id
         }
-    });
+    }).catch(serverError(res));
     return res.json(updateShoot);
 }
 
@@ -33,6 +38,6 @@ exports.deleteShoot = async (req, res) => {
         where: {
             id: req.params.id
         }
-    });
+    }).catch(serverError(res));
     return res.json(deleteShoot);
 }

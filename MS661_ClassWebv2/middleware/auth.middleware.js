@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
     if (token && token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);
     }
-
+    console.log("auth.middleware token : %s", token )
     if (token) {
         try {
             token = token.trim();
