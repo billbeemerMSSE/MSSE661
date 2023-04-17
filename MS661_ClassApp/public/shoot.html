@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>MS 661 Week 6 - Bill Beemer</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  
+  <body>
+    <div class="main">
+      <header>
+        <nav>
+          <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./about.html">About</a></li>
+            <li><a href="" onclick="doLogout(event)">Logout</a></li>
+          </ul>
+        </nav>
+      </header>
+      
+      <div class="content">
+        <p>
+        You are inside the website - woohoo! 
+        </p>
+        <br>
+        <div class="container">
+          <div class="shoot-form">
+            <form>
+              <div class="form-row">
+
+                  <label class="sr-only" for="formInputShootClient">Client Name</label>
+                  <input
+                    id="formInputShootClient"
+                    class="form-control"
+                    type="text"
+                    name="shoot-client"
+                    placeholder="Client Name"
+                  />
+                </div>
+                <div class="col-md-3">
+                  <label class="sr-only" for="formInputShootCater">Cater Needed</label>
+                  <input
+                    id="formInputShootCater"
+                    class="form-control"
+                    type="text"
+                    name="shoot-cater"
+                    placeholder="Cater Needed"
+                  />
+                </div>
+                <div class="col-md-3">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    onclick="doAddShoot(event)"
+                  >
+                    ADD
+                  </button>
+                </div>
+
+            </form>
+          </div>
+    
+          <div id="shoots">
+            <div>Loading...</div>
+          </div>
+        </div>
+
+      <footer>
+        <nav>
+          <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./about.html">About</a></li>
+            <li><a href="" onclick="doLogout(event)">Logout</a></li>
+          </ul>
+        </nav>
+        <ul>
+          <li>Author: <a href="https://github.com/billbeemerMSSE">Bill Beemer</a></li>
+        </ul>
+      </footer>
+    </div>
+
+  </body>
+  
+  <script src="./src/api-config.js"></script>
+  <script src="./src/simple-storage.js"></script>
+  <script src="./src/route-guard.js"></script>
+  <script src="./src/service-helpers.js"></script>
+  <script src="./src/auth.service.js"></script>
+  <script src="./src/shoot.service.js"></script>
+  <script src="./src/build-shoot-list.js"></script>
+  <script src="./src/add-shoot.js"></script>
+  <script src="./src/auth.js"></script>
+  
+</html>
