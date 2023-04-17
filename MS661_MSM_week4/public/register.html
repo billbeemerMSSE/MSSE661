@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>MS 661 Final Project - Bill Beemer</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  
+  <body>
+    <div class="main">
+      <header>
+        <nav>
+          <ul>
+            <li>Maui Sugar Mill Saloon</li>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./about.html">About</a></li>
+          </ul>
+        </nav>
+      </header>
+      
+      <div class="content">
+        <form>
+        <ul class="formWrapper">
+          <li class="formRow">
+            <label for="username">
+              Username:
+              <input id="username" type="text" class="inputArea"/>
+            </label>
+          </li>
+          <li class="formRow">
+            <label for="email">
+              Email:
+              <input id="email" type="text" class="inputArea"/>
+            </label>
+          </li>
+          <li class="formRow">
+            <label for="password">
+              Password:
+              <input id="password" type="password" class="inputArea"/>
+            </label>
+          </li>
+          <li class="formRow">
+            <!-- <button type="submit"> -->
+            <button onclick="doRegister(event)">
+            Register
+            </button>
+          </li> 
+        </ul>
+        </form>
+      </div>
+    
+      <footer>
+        <nav>
+          <ul>
+            <li>Maui Sugar Mill Saloon</li>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./about.html">About</a></li>
+          </ul>
+        </nav>
+        <ul>
+          <li>Author: <a href="https://github.com/billbeemerMSSE">Bill Beemer</a></li>
+        </ul>
+      </footer>
+    </div>
+
+  </body>
+  
+  <script src="../src/service-helpers.js"></script>
+  <script src="../src/auth.service.js"></script>
+  <script src="../src/app.js"></script>
+  
+</html>

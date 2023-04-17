@@ -1,7 +1,7 @@
 {
   "name": "ms661_classapp",
   "version": "1.0.0",
-  "description": "Week 4 Class App first package attempt",
+  "description": "Week 6 Class App - database access",
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./server",

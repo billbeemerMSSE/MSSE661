@@ -12,6 +12,7 @@ const middleware = require("./middleware/errors.middleware");
 const app = express();
 const port = process.env.PORT || 3000;
 const logLevel = process.env.LOG_LEVEL || "dev";
+const env = process.env.NODE_ENV;
 
 // const corsOptions = {
 //     origin: "http://localhost:4000"
@@ -19,7 +20,10 @@ const logLevel = process.env.LOG_LEVEL || "dev";
 
 // app.use(cors(corsOptions));
 app.use(cors());
-app.use(logger(logLevel));
+// app.use(logger(logLevel));
+if (env != "test") {
+    app.use(logger(logLevel));
+}
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -37,3 +41,4 @@ app.use(middleware.error500);
 app.listen(port, () => {
     console.log("Running Server on Port %s", port);
 });
+

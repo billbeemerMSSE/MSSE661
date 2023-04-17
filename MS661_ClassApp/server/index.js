@@ -1,4 +1,4 @@
-console.log("Hello Week 4");
+console.log("Hello Week 6");
 
 const express = require("express");
 const app = express();

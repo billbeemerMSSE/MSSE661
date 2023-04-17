@@ -6,8 +6,8 @@ const shootRoutes = express.Router();
 shootRoutes.get('/', controllers.getAllShoots).post('/', controllers.createShoot);
 
 shootRoutes
-    .get('/:taskId', controllers.getShoot)
-    .put('/:taskId', controllers.updateShoot)
-    .delete('/:taskId', controllers.deleteShoot);
+    .get('/:shoot_id', controllers.getShoot)
+    .put('/:shoot_id', controllers.updateShoot)
+    .delete('/:shoot_id', controllers.deleteShoot);
 
 module.exports = shootRoutes;
