@@ -4,6 +4,8 @@ const cache = require('../utils/cache.util');
 const jwt = require('../utils/jwt.util');
 const bcrypt = require('bcrypt');
 
+const { serverError } = require("../utils/handlers");
+
 exports.getAllShoots = async (req, res) => {
     const allShoots = await ShootModel.findAll().catch(serverError(res));
 
@@ -20,12 +22,12 @@ exports.getShoot = async (req, res) => {
 }
 
 exports.createShoot = async (req, res) => {
-    const newShoot = await ShootModel.create({client: req.body.client, cater: req.body.cater}).catch(serverError(res));
+    const newShoot = await ShootModel.create({client: req.body.shoot_client, cater: req.body.shoot_cater}).catch(serverError(res));
     return res.json(newShoot);
 }
 
 exports.updateShoot = async (req, res) => {
-    const updateShoot = await ShootModel.update({client: req.body.client, cater: req.body.cater}, {
+    const updateShoot = await ShootModel.update({client: req.body.shoot_client, cater: req.body.shoot_cater}, {
         where: {
             id: req.params.id
         }
