@@ -4,26 +4,26 @@ const jwt = require('../utils/jwt.util');
 module.exports = async (req, res, next) => {
 
     let token = req.headers.authorization;
+
     if (token && token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);
     }
-    console.log("auth.middleware token : %s", token )
+
     if (token) {
         try {
             token = token.trim();
             /* ---------------------- Check For Blacklisted Tokens ---------------------- */
             const isBlackListed = await cache.get(token);
+
             if (isBlackListed) {
-                return res.status(401).json({ message: 'Unauthorized' });
+                return res.status(401).json({ message: 'Unauthorized - blacklisted' });
             }
             
-            const decoded = await jwt.verifyToken(token);
-            req.user = decoded;
             req.token = token;
             next();
 
         } catch (error) { 
-            return res.status(401).json({ message: 'Unauthorized' });
+            return res.status(401).json({ message: 'Unauthorized - error' });
         }
     } else {
         return res.status(400).json({ message: 'Authorization header is missing.' })

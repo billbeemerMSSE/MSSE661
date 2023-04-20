@@ -29,20 +29,25 @@ exports.login = async (req, res) => {
     const user = await UserModel.findOne({
         where: {
             email: req.body.email
-        }
+        },
+        raw : true
     }).catch(serverError(res));
     if (user) {
         const isMatched = await bcrypt.compare(req.body.password, user.password);
         if (isMatched) {
             const token = await jwt.createToken({ id: user.id });
             return res.json({
-                access_token: token,
+                isAuth: true,
+                token: token,
                 token_type: 'Bearer',
                 expires_in: jwtConfig.ttl
             });
         }
     }
-    return res.status(400).json({ message: 'Unauthorized' });
+    return res.status(400).json({ 
+        isAuth: false,
+        message: 'Unauthorized',
+     });
 }
 
 exports.getUser = async (req, res) => {
