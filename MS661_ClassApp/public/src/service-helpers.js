@@ -10,14 +10,14 @@ const DEFAULT_OPTIONS = {
 
 const DEFAULT_OPTIONS_WITH_AUTH = {
     headers: {
-        Athorization: token,
+        Authorization: token,
         "Content-Type": "application/json",
     },
 };
 
 const OPTIONS_WITH_AUTH = {
     headers: {
-        Athorization: token,
+        Authorization: token,
     },
 };
 
@@ -54,30 +54,3 @@ const _delete = async (url, options = DEFAULT_OPTIONS_WITH_AUTH) => {
     });
     return response.json();
 };
-
-
-// function _get(url) {
-//     return fetch(url, {
-//         method: "GET"
-//     });
-// }
-
-// function _post(url, data) {
-//     return fetch(url, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(data)
-//     });
-// }
-
-// function _put(url, data) {
-//     return fetch(url, {
-//         method: "PUT",
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(data)
-//     });
-// }

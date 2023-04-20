@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>MS 661 Week 6 - Bill Beemer</title>
     <link rel="stylesheet" href="./css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
   </head>
   
   <body>
@@ -23,11 +29,14 @@
         You are inside the website - woohoo! 
         </p>
         <br>
+        
+
+
         <div class="container">
           <div class="shoot-form">
             <form>
               <div class="form-row">
-
+                <div class="col-md-5">
                   <label class="sr-only" for="formInputShootClient">Client Name</label>
                   <input
                     id="formInputShootClient"
@@ -37,14 +46,14 @@
                     placeholder="Client Name"
                   />
                 </div>
-                <div class="col-md-3">
-                  <label class="sr-only" for="formInputShootCater">Cater Needed</label>
+                <div class="col-md-4">
+                  <label class="sr-only" for="formInputShootCater">Catering Needed</label>
                   <input
                     id="formInputShootCater"
                     class="form-control"
                     type="text"
                     name="shoot-cater"
-                    placeholder="Cater Needed"
+                    placeholder="Catering Needed"
                   />
                 </div>
                 <div class="col-md-3">
@@ -56,7 +65,7 @@
                     ADD
                   </button>
                 </div>
-
+              </div>
             </form>
           </div>
     
@@ -64,6 +73,7 @@
             <div>Loading...</div>
           </div>
         </div>
+
 
       <footer>
         <nav>
@@ -83,12 +93,18 @@
   
   <script src="./src/api-config.js"></script>
   <script src="./src/simple-storage.js"></script>
-  <script src="./src/route-guard.js"></script>
   <script src="./src/service-helpers.js"></script>
+  <script src="./src/route-guard.js"></script>
   <script src="./src/auth.service.js"></script>
   <script src="./src/shoot.service.js"></script>
-  <script src="./src/build-shoot-list.js"></script>
-  <script src="./src/add-shoot.js"></script>
   <script src="./src/auth.js"></script>
+  <script src="./src/shoot-api.service.js"></script>
+  <script src="./src/shoot.js"></script>
+  <script src="./src/app.js"></script>
+
+
+
+
+
   
 </html>

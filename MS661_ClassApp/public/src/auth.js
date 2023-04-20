@@ -1,5 +1,5 @@
 /**
- * Class App Week 6 
+ * Class App Week 7
  * MS 661
  * Bill Beemer
  */
@@ -10,27 +10,34 @@ const doLogin = async (event) => {
 	const email = document.getElementById("email").value;
 	const password = document.getElementById("password").value;
 
-	const response = await login({ email, password }).catch((error) => {
+	try {
+		const response = await login({ email, password })
+		if (response.isAuth === false) {
+			console.log("Failed to Login response.isAuth: %s", response.isAuth);
+			alert("Failed to Login");
+			window.location.href = "index.html";
+		} else {
+			const { isAuth, token } = response;
+			setStorage("isAuth", isAuth)
+			setStorage("token", token);
+			console.log("isAuth : %s", isAuth)
+			console.log("token : %s", token)
+			window.location.href = "shoot.html";
+		}
+
+	} catch (error) {
 		alert("Failed to Login");
-	});
-
-	const { auth, token } = response;
-
-	setStorage("isAuth", auth)
-	setStorage("token", token);
-
-	window.location.href = "shoot.html";
-
+	}
 };
 
 const doRegister = async (event) => {
 	event.preventDefault();
-	const username = document.getElementById("username").value;
+	const name = document.getElementById("name").value;
 	const email = document.getElementById("email").value;
 	const password = document.getElementById("password").value;
 
 	const response = await register({
-		username,
+		name,
 		email,
 		password,
 	});
@@ -45,48 +52,3 @@ const doLogout = function(event) {
 	logout();
 	window.location.href = "index.html";
 };
-
-// (() => {
-// 	if (storageHasData()) {
-// 		const isAuth = getStorage("isAuth");
-// 		// if (!isAuth) {
-// 		// 	document.getElementById("logout").style.display = "none";
-// 		// } else {
-// 		// 	document.getElementById("logout").style.display = "block";
-// 		// }
-// 	}
-// })();
-
-// const doLogin = function(event) {
-// 	event.preventDefault();
-// 	const username = document.getElementById("username").value;
-// 	const password = document.getElementById("password").value;
-
-// 	login({
-// 		username: username,
-// 		password: password
-// 	}).then(function(response) {
-// 		window.location.href = "home.html";
-// 	})
-// };
-
-// const doRegister = function(event) {
-// 	event.preventDefault();
-// 	const username = document.getElementById("username").value;
-// 	const email = document.getElementById("email").value;
-// 	const password = document.getElementById("password").value;
-
-// 	register({
-// 		username: username,
-// 		email: email,
-// 		password: password
-// 	}).then(function(response) {
-// 		window.location.href = "home.html";
-// 	})
-// };
-
-// const doLogout = function(event) {
-// 	event.preventDefault();
-// };
- 
- 		
