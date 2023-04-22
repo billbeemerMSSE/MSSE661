@@ -1,96 +1,60 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>MS 661 Week 7 - Bill Beemer</title>
-    <link rel="stylesheet" href="./css/styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
   </head>
-  
+
   <body>
-    <div class="main">
-      <header>
-        <nav>
-          <ul>
-            <li><a href="./index.html">Home</a></li>
-            <li><a href="./about.html">About</a></li>
-            <li><a href="" onclick="doLogout(event)">Logout</a></li>
-          </ul>
-        </nav>
-      </header>
-      
-      <div class="content">
-        <p>
-        You are inside the website - woohoo! 
-        </p>
-        <br>
-        
-
-
-        <div class="container">
-          <div class="shoot-form">
-            <form>
-              <div class="form-row">
-                <div class="col-md-5">
-                  <label class="sr-only" for="formInputShootClient">Client Name</label>
-                  <input
-                    id="formInputShootClient"
-                    class="form-control"
-                    type="text"
-                    name="shoot-client"
-                    placeholder="Client Name"
-                  />
-                </div>
-                <div class="col-md-4">
-                  <label class="sr-only" for="formInputShootCater">Catering Needed</label>
-                  <input
-                    id="formInputShootCater"
-                    class="form-control"
-                    type="text"
-                    name="shoot-cater"
-                    placeholder="Catering Needed"
-                  />
-                </div>
-                <div class="col-md-3">
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    onclick="doAddShoot(event)"
-                  >
-                    ADD
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-    
-          <div id="shoots">
-            <div>Loading...</div>
-          </div>
-        </div>
-
-
-      <footer>
-        <nav>
-          <ul>
-            <li><a href="./index.html">Home</a></li>
-            <li><a href="./about.html">About</a></li>
-            <li><a href="" onclick="doLogout(event)">Logout</a></li>
-          </ul>
-        </nav>
+    <header>
+      <nav>
         <ul>
-          <li>Author: <a href="https://github.com/billbeemerMSSE">Bill Beemer</a></li>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./about.html">About</a></li>
+          <li><a href="" onclick="doLogout(event)">Logout</a></li>
         </ul>
-      </footer>
+      </nav>
+    </header>
+
+    <div class="main">
+      <div class="container">
+      <form>
+        <div>
+          <label for="formInputShootClient">Client Name:</label>
+          <input
+            id="formInputShootClient"
+            type="text"
+            name="shoot-client"
+            placeholder="Client Name"
+          />
+        </div>
+        <div>
+          <label for="formInputShootCater">Catering Needed:</label>
+          <input
+            id="formInputShootCater"
+            type="text"
+            name="shoot-cater"
+            placeholder="Catering Needed"
+          />
+        </div>
+        <div>
+          <button type="submit" onclick="doAddShoot(event)">ADD</button>
+        </div>
+      </form>
+      
+      <div id="shoots">
+
+      </div>
+      </div>
+    </div>
     </div>
 
+    <footer>
+      <p>Author: <a href="https://github.com/billbeemerMSSE">Bill Beemer</a></p>
+    </footer>
   </body>
-  
+
   <script src="./src/api-config.js"></script>
   <script src="./src/simple-storage.js"></script>
   <script src="./src/service-helpers.js"></script>
@@ -101,10 +65,4 @@
   <script src="./src/shoot-api.service.js"></script>
   <script src="./src/shoot.js"></script>
   <script src="./src/app.js"></script>
-
-
-
-
-
-  
 </html>

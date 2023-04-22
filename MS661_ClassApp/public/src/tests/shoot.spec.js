@@ -1,5 +1,4 @@
 const request = require("supertest");
-// const shoot = require("../public/src/shoot-api.service");
 
 const SHOOT_API_URL = "http://localhost:3000/api";
 
