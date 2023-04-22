@@ -5,5 +5,7 @@ class ShootsService {
 
     addShoot = (formData) => _post(SHOOT_API, formData, DEFAULT_OPTIONS_WITH_AUTH);
 
+    editShoot = (shootId, formData) => _put(`${SHOOT_API}/${shootId}`, formData, DEFAULT_OPTIONS_WITH_AUTH);
+
     deleteShoot = (shootId) => _delete(`${SHOOT_API}/${shootId}`, OPTIONS_WITH_AUTH);
 }

@@ -13,15 +13,24 @@ class Shoot {
     _renderListRowItem = (shoot) => {
       const listGroupItem = document.createElement('li');
       listGroupItem.id = `shoot-${shoot.id}`;
-      listGroupItem.className = 'list-group-item';
+      listGroupItem.className = 'shoot-item';
   
       const deleteBtn = document.createElement('button');
-      const deleteBtnTxt = document.createTextNode('X');
+      const deleteBtnTxt = document.createTextNode('🗑️');
       deleteBtn.id = 'delete-btn';
-      deleteBtn.className = 'btn btn-secondary';
+      deleteBtn.className = 'dbtn';
       deleteBtn.addEventListener('click', this._deleteEventHandler(shoot.id));
       deleteBtn.appendChild(deleteBtnTxt);
+
+      const editBtn = document.createElement('button');
+      const editBtnTxt = document.createTextNode('✏️');
+      editBtn.id = 'edit-btn';
+      editBtn.className = 'ebtn';
+      editBtn.addEventListener('click', this._editShootEventHandler(shoot));
+      editBtn.appendChild(editBtnTxt);
   
+      const shootInfoDiv = document.createElement('div');
+
       const shootClientSpan = document.createElement('span');
       const shootClient = document.createTextNode(shoot.client);
       shootClientSpan.appendChild(shootClient);
@@ -31,9 +40,11 @@ class Shoot {
       shootCaterSpan.append(shootCater);
   
       // add list item's details
+      listGroupItem.append(editBtn);
+      listGroupItem.append(shootInfoDiv);
       listGroupItem.append(deleteBtn);
-      listGroupItem.append(shootClientSpan);
-      listGroupItem.append(shootCaterSpan);
+      shootInfoDiv.append(shootClientSpan);
+      shootInfoDiv.append(shootCaterSpan);
   
       return listGroupItem;
     };
@@ -46,11 +57,13 @@ class Shoot {
       const fragment = document.createDocumentFragment();
       const ul = document.createElement('ul');
       ul.id = 'shoots-list';
-      ul.className = 'list-group list-group-flush checked-list-box';
-  
+      ul.className = 'shoot-container';
+      const myheader = document.createElement("li");
+      myheader.classList.add("shoot-header");
+      myheader.innerHTML = '<div><span>Client Name</span><span>Catering Needs</span></div>';
+      ul.appendChild(myheader);
       this.shoots.map((shoot) => {
         const listGroupRowItem = this._renderListRowItem(shoot);
-  
         ul.appendChild(listGroupRowItem);
       });
   
@@ -102,17 +115,13 @@ class Shoot {
       }
   
       const shoot = { shoot_client, shoot_cater }; 
-      const { newShoot, newShootEl } = this._createNewShootEl(shoot); 
-  
-      this.addShoot(newShoot);
+      const newShootEl = this._createNewShootEl(shoot); 
+      this.addShoot(shoot);
   
       const listParent = document.getElementById('shoots-list');
   
-      if (listParent) {
-        listParent.appendChild(newShootEl);
-      } else {
-        this._renderList();
-      }
+      listParent.appendChild(newShootEl);
+
       shootClient.value = ''; 
       shootCater.value = '';
     };
@@ -120,10 +129,13 @@ class Shoot {
 
     _createNewShootEl = (shoot) => {
       const shoot_id = this.shoots.length;
-      const newShoot = { ...shoot, shoot_id};
-      const newShootEl = this._renderListRowItem(newShoot);
-  
-      return { newShoot, newShootEl };
+      let shootInfo = {};
+      shootInfo.id = shoot_id;
+      shootInfo.client = shoot.shoot_client;
+      shootInfo.cater = shoot.shoot_cater;
+      const newShootEl = this._renderListRowItem(shootInfo);
+
+      return newShootEl;
     };
   
 
@@ -142,8 +154,21 @@ class Shoot {
     };
   
 
-    _deleteEventHandler = (shootId) => () => {
+    _deleteEventHandler = (shootId) => (e) => {
       const shoot = document.getElementById(`shoot-${shootId}`);
+      const clientEl = document.querySelector(`#shoot-${shootId} > div > span:nth-child(1)`);
+      const caterEl = document.querySelector(`#shoot-${shootId} > div > span:nth-child(2)`);
+      const editBtn = document.querySelector(`#shoot-${shootId} > button#edit-btn`);
+
+      if (clientEl.getAttribute("contenteditable") == "true") {
+        e.target.innerText = "🗑️";
+        clientEl.setAttribute("contenteditable", false);
+        caterEl.setAttribute("contenteditable", false);
+        clientEl.innerText = this.clientOld;
+        caterEl.innerText = this.caterOld;
+        editBtn.innerText = "✏️";
+        return;
+      }
       shoot.remove();
   
       this.deleteShoot(shootId).then(() => {
@@ -151,6 +176,63 @@ class Shoot {
           this._renderMsg();
         }
       });
+    };
+
+    editShoot = async (shootInfo) => {
+      try {
+        const {id, client, cater} = shootInfo;
+        let formData = {};
+        formData.shoot_client = client;
+        formData.shoot_cater = cater;
+        await this.shootsService.editShoot(id, formData);
+      } catch (err) {
+        console.log(err);
+        alert('Unable to modify shoot. Please try again later.');
+      }
+    };
+
+    clientOld;
+    caterOld;
+    _editShootEventHandler = (shoot) => (e) => {
+      const clientEl = document.querySelector(`#shoot-${shoot.id} > div > span:nth-child(1)`);
+      const caterEl = document.querySelector(`#shoot-${shoot.id} > div > span:nth-child(2)`);
+      const dbtn = document.querySelector(`#shoot-${shoot.id} > button#delete-btn`);
+
+      if (clientEl.getAttribute("contenteditable") == "true") {
+        if (clientEl.innerText == this.clientOld && caterEl.innerText == this.caterOld) {
+          clientEl.setAttribute("contenteditable", false);
+          caterEl.setAttribute("contenteditable", false);
+          e.target.innerText = "✏️";
+          dbtn.innerText = "🗑️";
+          return;
+        };
+        let same;
+        for (let i = 0; i < this.shoots.length; i++) {
+          if (this.shoots[i].client == clientEl.innerText) same = true;
+        }
+        if (same == true) {alert("Client name cannot be the same as other clients!");return;}
+
+        let newShoot = {};
+        newShoot.id = shoot.id;
+        newShoot.client = clientEl.innerText;
+        newShoot.cater = parseInt(caterEl.innerText);
+
+        this.editShoot(newShoot).then(() => {
+          clientEl.setAttribute("contenteditable", false);
+          caterEl.setAttribute("contenteditable", false);
+          e.target.innerText = "✏️";
+          dbtn.innerText = "🗑️";
+          this.shoots.push(newShoot);
+          this.shoots.splice(this.shoots.findIndex(x => x.client == this.clientOld), 1);
+        })
+      } else {
+        this.caterOld = caterEl.innerText;
+        this.clientOld = clientEl.innerText;
+        clientEl.setAttribute("contenteditable", true);
+        caterEl.setAttribute("contenteditable", true);
+        e.target.innerText = "✔️";
+        dbtn.innerText = "X"
+      }
     };
   
     _createMsgElement = (msg) => {

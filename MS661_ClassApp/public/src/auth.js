@@ -13,15 +13,12 @@ const doLogin = async (event) => {
 	try {
 		const response = await login({ email, password })
 		if (response.isAuth === false) {
-			console.log("Failed to Login response.isAuth: %s", response.isAuth);
 			alert("Failed to Login");
 			window.location.href = "index.html";
 		} else {
 			const { isAuth, token } = response;
 			setStorage("isAuth", isAuth)
 			setStorage("token", token);
-			console.log("isAuth : %s", isAuth)
-			console.log("token : %s", token)
 			window.location.href = "shoot.html";
 		}
 
@@ -43,6 +40,8 @@ const doRegister = async (event) => {
 	});
 	
 	if (response) {
+		const { isAuth, token } = response;
+		setStorage("isAuth", isAuth)
 		window.location.href = "shoot.html";
 	}
 };
