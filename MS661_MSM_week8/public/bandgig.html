@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>MS 661 Maui Sugar Mill - Final - Bill Beemer</title>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./about.html">About</a></li>
+          <li><a href="" onclick="doLogout(event)">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="main">
+      <div class="container">
+      <form>
+        <div>
+          <label for="formInputBandGigDate">Show Date:</label>
+          <input
+            id="formInputBandGigDate"
+            type="text"
+            name="bandGig-date"
+            placeholder="Show Date"
+          />
+        </div>
+        <div>
+          <label for="formInputBandGigName">Band Name:</label>
+          <input
+            id="formInputBandGigName"
+            type="text"
+            name="sbandGig-name"
+            placeholder="Band Name"
+          />
+        </div>
+        <div>
+          <button type="submit" onclick="doAddBandGig(event)">ADD</button>
+        </div>
+      </form>
+      
+      <div id="bandGigs">
+
+      </div>
+      </div>
+    </div>
+    </div>
+
+    <footer>
+      <p>Author: <a href="https://github.com/billbeemerMSSE">Bill Beemer</a></p>
+    </footer>
+  </body>
+
+  <script src="./src/api-config.js"></script>
+  <script src="./src/simple-storage.js"></script>
+  <script src="./src/service-helpers.js"></script>
+  <script src="./src/route-guard.js"></script>
+  <script src="./src/auth.service.js"></script>
+  <script src="./src/bandGig.service.js"></script>
+  <script src="./src/auth.js"></script>
+  <script src="./src/bandGig-api.service.js"></script>
+  <script src="./src/bandGig.js"></script>
+  <script src="./src/app.js"></script>
+</html>
