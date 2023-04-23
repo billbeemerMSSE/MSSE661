@@ -3,7 +3,6 @@ const router = express.Router();
 
 const AuthController = require('../controllers/auth.controller');
 const ShootController = require('../controllers/shoot.controller');
-const BandGigController = require('../controllers/bandgig.controller');
 const ErrorHandler = require('../middleware/error.middleware');
 const AuthGuard = require('../middleware/auth.middleware');
 const schema = require('../validatons/auth.validation');
@@ -22,16 +21,6 @@ router
     .get('/shoot/:id', AuthGuard, ErrorHandler(ShootController.getShoot))
     .put('/shoot/:id', AuthGuard, ErrorHandler(ShootController.updateShoot))
     .delete('/shoot/:id', AuthGuard, ErrorHandler(ShootController.deleteShoot));
-
-router.get('/bandgig', AuthGuard, ErrorHandler(BandGigController.getAllBandGigs));
-router.post('/bandgig', AuthGuard, ErrorHandler(BandGigController.createBandGig));
-
-router
-    .get('/bandgig/:id', AuthGuard, ErrorHandler(BandGigController.getBandGig))
-    .put('/bandgig/:id', AuthGuard, ErrorHandler(BandGigController.updateBandGig))
-    .delete('/bandgig/:id', AuthGuard, ErrorHandler(BandGigController.deleteBandGig));
-
-
 
 router.all('*',  (req, res) => res.status(400).json({ message: 'Bad Request.'}))
 
