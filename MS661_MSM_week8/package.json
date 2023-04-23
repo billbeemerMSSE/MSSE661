@@ -1,0 +1,24 @@
+{
+  "name": "ms661_MSM_finalApp",
+  "version": "1.0.0",
+  "description": "Week 8 MSM Final App",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./server",
+    "test": "jest"
+  },
+  "author": "Bill Beemer",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
+  },
+  "nodemonConfig": {
+    "ext": "js,json,hbs,html,css"
+  }
+}
+

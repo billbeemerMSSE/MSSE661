@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+:root {
+    --link-color: #4a91e8;
+    --bg-color: #1d1d1d;
+    --fg-color: white;
+    --text-color: white;
+    --text-dark-color: #121212;
+    --header-footer-color: #343434;
+
+    --shadow-color: 0deg 0% 3%;
+    --shadow-elevation-medium:
+    0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.36),
+    0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 0.36),
+    2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 0.36),
+    5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 0.36);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Inter, sans-serif;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+header, footer{
+    background-color: var(--header-footer-color);
+    width: 100%;
+}
+
+nav {
+    display: grid;
+    place-items: center;
+    height: 3rem;
+}
+
+ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+   text-decoration: underline;
+}
+
+.main {
+    background-color: var(--bg-color);
+    height: calc(100vh - 7.5rem);
+    padding-bottom: 2.5rem;
+    display: grid;
+    place-items: center;
+    align-content: center;
+}
+
+.content {
+    padding: 1rem;
+    color: var(--text-color);
+}
+
+.container {
+    background-color: var(--fg-color);
+    padding: 2rem;
+    display: grid;
+    grid-template-rows: min-content auto;
+    max-height: 80vh;
+    border-radius: 10px;
+    box-shadow: var(--shadow-elevation-medium);
+    min-width: 32rem;
+}
+
+form {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 3px;
+}
+
+form > div > label {
+    font-size: large;
+    font-weight: 700;
+    color: var(--text-dark-color);
+}
+
+form > div > input[type="text"], form > div > input[type="password"] {
+    outline: none;
+    width: 100%;
+    border: none;
+    height: 2rem;
+    border-bottom: #121212 solid 2px;
+}
+
+form > div > input[type="text"]:focus-visible, form > div > input[type="password"]:focus-visible {
+    width: 100%;
+    border: none;
+    height: 2rem;
+    border-bottom: blue solid 2px;
+}
+
+form > div > button {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: lightblue;
+    border: none;
+    place-self: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+form > div > button:hover {
+    background-color: rgb(134, 167, 179);
+}
+
+#bandGigs {
+    margin-top: 1rem;
+}
+
+.bandGig-container {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.bandGig-header {
+    border: none !important;
+}
+
+.bandGig-item, .bandGig-header {
+    height: 2rem;
+    border: 1px solid black;
+    position: relative;
+    isolation: isolate;
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.bandGig-item > button {
+    border: none;
+    height: 100%;
+    aspect-ratio: 1;
+    cursor: pointer;
+    pointer-events: all;
+}
+
+.dbtn {
+    background-color: red;
+}
+
+.ebtn {
+    background-color: green;
+}
+
+.bandGig-item > div, .bandGig-header > div {
+    display: flex;
+    width: calc(100% - 2rem);
+    justify-content: space-between;
+    padding: 0 4rem;
+}
+
+.bandGig-header > div {
+    padding: 0 7rem;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    height: 2.5rem;
+    display: grid;
+    place-items: center;
+}
+
+footer > p { 
+    color: white;
+}
