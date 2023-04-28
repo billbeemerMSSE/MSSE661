@@ -37,6 +37,7 @@ exports.login = async (req, res) => {
         if (isMatched) {
             const token = await jwt.createToken({ id: user.id });
             return res.json({
+                id: user.id,
                 isAuth: true,
                 token: token,
                 token_type: 'Bearer',
@@ -55,17 +56,47 @@ exports.getUser = async (req, res) => {
     return res.json(user);
 }
 
-exports.updateUser = async (req, res) => {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const updateUser = await UserModel.update({
-        name: req.body.name,
-        password: hashedPassword
-        }, {
+exports.updateUserName = async (req, res) => {
+    const user = await UserModel.findOne({
         where: {
-            email: req.body.email
-        }
+            id: req.params.id
+        },
+        raw : true
     }).catch(serverError(res));
-    return res.json(updateUser);
+    if (user) {
+        const isMatched = await bcrypt.compare(req.body.user_pw, user.password);
+        if (isMatched) {
+
+            const updateUser = await UserModel.update({name: req.body.user_name }, {
+                where: {
+                    id: req.params.id
+                }
+            }).catch(serverError(res));
+            return res.json(updateUser);
+        }
+    }
+}
+
+exports.updatePassword = async (req, res) => {
+    const user = await UserModel.findOne({
+        where: {
+            id: req.params.id
+        },
+        raw : true
+    }).catch(serverError(res));
+    if (user) {
+        const isMatched = await bcrypt.compare(req.body.current_pw, user.password);
+        const hashedPassword = await bcrypt.hash(req.body.update_pw, 10);
+        if (isMatched) {
+
+            const updateUser = await UserModel.update({password: hashedPassword }, {
+                where: {
+                    id: req.params.id
+                }
+            }).catch(serverError(res));
+            return res.json(updateUser);
+        }
+    }
 }
 
 exports.logout = async (req, res) => { 
