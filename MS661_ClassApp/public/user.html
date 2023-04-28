@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>MS 661 Week 8 - Bill Beemer</title>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./about.html">About</a></li>
+          <li><a href="./shoot.html">Catering</a></li>
+          <li><a href="" onclick="doLogout(event)">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="main mainuser">
+      <div class="user_container">
+      <form>
+        <div>
+          <label for="formInputUserName">User Name:</label>
+          <input
+            id="formInputUserName"
+            type="text"
+            name="user-name"
+            placeholder="User Name"
+          />
+        </div>
+        <div>
+          <label for="formInputUserPw">Password:</label>
+          <input
+            id="formInputUserPw"
+            type="password"
+            name="user-pw"
+            placeholder="Password"
+          />
+        </div>
+
+        <div>
+          <button type="submit" onclick="doUpdateUsername(event)">UPDATE USERNAME</button>
+        </div>
+      </form>
+    </div>
+    <div class="user_container">
+      <form>
+        <div>
+          <label for="formInputCurrentPw">Current Password:</label>
+          <input
+            id="formInputCurrentPw"
+            type="password"
+            name="current-pw"
+            placeholder="Current Password"
+          />
+        </div>
+        <div>
+          <label for="formInputUpdatePw">New Password:</label>
+          <input
+            id="formInputUpdatePw"
+            type="password"
+            name="update-pw"
+            placeholder="New Password"
+          />
+        </div>
+        <div>
+          <button type="submit" onclick="doUpdatePassword(event)">UPDATE PASSWORD</button>
+        </div>
+      </form>
+    </div>
+
+    <footer>
+      <p>Author: <a href="https://github.com/billbeemerMSSE">Bill Beemer</a></p>
+    </footer>
+  </body>
+
+  <script src="./src/api-config.js"></script>
+  <script src="./src/simple-storage.js"></script>
+  <script src="./src/service-helpers.js"></script>
+  <script src="./src/route-guard.js"></script>
+  <script src="./src/auth.service.js"></script>
+  <script src="./src/user.service.js"></script>
+  <script src="./src/auth.js"></script>
+  <script src="./src/user-api.service.js"></script>
+  <script src="./src/user.js"></script>
+  <script src="./src/user-app.js"></script>
+</html>

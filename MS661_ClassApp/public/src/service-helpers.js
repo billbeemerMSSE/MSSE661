@@ -1,7 +1,6 @@
 const storedToken = storageHasData() ? getStorage("token") : "";
 const token = `Bearer ${storedToken}`;
 
-console.log("service-helpers token : %s", token)
 const DEFAULT_OPTIONS = {
     headers: {
         "Content-Type": "application/json",
