@@ -62,6 +62,10 @@ a:hover {
     align-content: center;
 }
 
+.main.mainuser {
+    gap: 1rem;
+}
+
 .content {
     padding: 1rem;
     color: var(--text-color);
@@ -76,6 +80,17 @@ a:hover {
     border-radius: 10px;
     box-shadow: var(--shadow-elevation-medium);
     max-width: 26rem;
+}
+
+.user_container {
+    background-color: var(--fg-color);
+    padding: 2rem;
+    display: grid;
+    grid-template-rows: min-content auto;
+    max-height: 80vh;
+    border-radius: 10px;
+    box-shadow: var(--shadow-elevation-medium);
+    width: 20rem;
 }
 
 form {
